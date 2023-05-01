@@ -21,11 +21,11 @@ import java.util.logging.Logger;
 import utils.PropertyHandler;
 
 /**
- * Class [Satellite] Instances of this class represent computing nodes that execute jobs by
- * calling the callback method of tool a implementation, loading the tool's code dynamically over a network
- * or locally from the cache, if a tool got executed before.
+ * The [Satellite] class acts like an computing node that execute jobs by
+ * calling the callback method of tool a implementation, loading the tool's code 
+ * dynamically over a network or locally from the cache, if a tool got executed before.
  *
- * @author Dr.-Ing. Wolf-Dieter Otte
+ * @author Dr.-Ing. Wolf-Dieter Otte, manoj, sampath, Srinivasa
  */
 public class Satellite extends Thread {
 
@@ -45,7 +45,10 @@ public class Satellite extends Thread {
         // which later on will be sent to the server
         try {
             properties = new PropertyHandler(satellitePropertiesFile);
-
+            
+            System.out.println("=============================================");
+            System.out.println("Satellite Configurations");
+            System.out.println("=============================================");
             name = properties.getProperty("NAME");
             System.out.println("[Satellite.Satellite] NAME: " + name);
             port = Integer.parseInt(properties.getProperty("PORT"));
@@ -62,7 +65,11 @@ public class Satellite extends Thread {
         // other than satellites, the as doesn't have a human-readable name, so leave it out
         try {
             properties = new PropertyHandler(serverPropertiesFile);
-
+            
+            System.out.println("=============================================");
+            System.out.println("Application Server Configurations");
+            System.out.println("=============================================");
+            
             host = properties.getProperty("HOST");
             System.out.println("[Satellite.Satellite] HOST: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
@@ -78,7 +85,11 @@ public class Satellite extends Thread {
         // -------------------
         try {
             properties = new PropertyHandler(classLoaderPropertiesFile);
-
+            
+            System.out.println("=============================================");
+            System.out.println("Webserver Configurations");
+            System.out.println("=============================================");
+            
             host = properties.getProperty("HOST");
             System.out.println("[Satellite.Satellite] HOST: " + host);
             port = Integer.parseInt(properties.getProperty("PORT"));
@@ -136,7 +147,6 @@ public class Satellite extends Thread {
         // ---------------------------------------------------------------
         System.out.println("[Satellite.run] Waiting for connections on Port #" + satelliteInfo.getPort());
         while (true) {
-            
             try {
                 new SatelliteThread(serverSocket.accept()).start();
 

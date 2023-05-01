@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package appserver.client;
 
 import appserver.comm.Message;
@@ -38,7 +33,7 @@ public class FibonacciClient extends Thread {
             
             this.number = number;
         } catch (IOException | NumberFormatException ex) {
-            ex.printStackTrace();
+            System.err.println("[FibonacciClient.FibonacciClient] : " + ex.getMessage());
         }
     }
     
@@ -48,7 +43,7 @@ public class FibonacciClient extends Thread {
             // connect to application server
             Socket server = new Socket(host, port);
             
-            // hard-coded string of class, aka tool name ... plus one argument
+            // hard-coded string of class, aka tool name ... Fibonacci
             String classString = "appserver.job.impl.Fibonacci";
             
             
@@ -64,17 +59,16 @@ public class FibonacciClient extends Thread {
             // for simplicity, the result is not encapsulated in a message
             ObjectInputStream readFromNet = new ObjectInputStream(server.getInputStream());
             Integer result = (Integer) readFromNet.readObject();
-            System.out.println("Fibonacci Number of " + number +  " : " + result);
+            System.out.println("Fibonacci Number for " + number +  " : " + result);
         } catch (IOException | ClassNotFoundException ex) {
-            System.err.println("[FibonacciClient.run] Error occurred");
-            ex.printStackTrace();
+            System.err.println("[FibonacciClient.run] Error occurred : " + ex.getMessage());
         }
     }
 
     public static void main(String[] args) { 
         
         // create 46 requests to client server
-        for(int i=46; i>0; i--) {
+        for(int i = 46; i > 0; i--) {
             new FibonacciClient("../../config/Server.properties", i).start();
         }
     }
